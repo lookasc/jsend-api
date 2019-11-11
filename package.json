@@ -1,6 +1,6 @@
 {
   "name": "jsend-api",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,8 @@
   "keywords": [
     "jsend",
     "api",
-    "formatter"
+    "formatter",
+    "express"
   ],
   "author": "lookasc",
   "license": "MIT",
