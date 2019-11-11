@@ -1,0 +1,28 @@
+{
+  "name": "jsend-api",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha **/*.test.js --bail --timeout 3000 --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lookasc/jsend-api.git"
+  },
+  "keywords": [
+    "jsend",
+    "api",
+    "formatter"
+  ],
+  "author": "lookasc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lookasc/jsend-api/issues"
+  },
+  "homepage": "https://github.com/lookasc/jsend-api#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2"
+  }
+}
