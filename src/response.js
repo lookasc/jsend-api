@@ -8,7 +8,6 @@ var Response = function (data) {
 
 Response.prototype.jsend = function (res) {
   fillDataFieldWithNullForSuccessAndFail.call(this);
-
   return res.status(this.statusCode).json(this.payload);
 }
 
