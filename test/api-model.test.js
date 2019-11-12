@@ -10,7 +10,7 @@ describe('API model class:\n', () => {
   var API;
 
   beforeEach(() => {
-    API = new ApiModel(mock.model);
+    API = new ApiModel(mock.model).compile();
   })
 
   it('should create model', () => {

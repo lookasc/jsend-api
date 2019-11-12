@@ -1,7 +1,12 @@
 var Response = require('./response');
 
-var API = function (apiModel) {
-  this.RESPONSE = prepareApiObject(apiModel);
+var ApiModel = function (apiModel) {
+  this.inputModel = apiModel;
+
+  this.compile = function () {
+    this.RESPONSE = prepareApiObject(this.inputModel);
+    return this;
+  }
 };
 
 // Rewrite all members from model to API object and populate with Response objects
@@ -22,4 +27,4 @@ var prepareApiObject = function (inputModel) {
   return apiObject;
 }
 
-module.exports = API;
+module.exports = ApiModel;
