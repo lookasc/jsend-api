@@ -5,7 +5,7 @@ const mock = require('./api-model.mock');
 const mockRes = require('./response.mock');
 const Response = require('../src/response');
 
-describe('API model class:\n', () => {
+describe('ApiModel class:\n', () => {
 
   var API;
 
