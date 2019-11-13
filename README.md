@@ -1,5 +1,5 @@
 # jsend-api
->Model based JSON API module, implementing JSend specification for Express.js
+Model based JSON API module, implementing JSend specification for Express.js
 
 [![NPM][npm-icon]][npm-url]
 
