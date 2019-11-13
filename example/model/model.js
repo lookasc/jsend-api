@@ -1,4 +1,4 @@
-var ApiModel = require('../src/api-model');
+var ApiModel = require('../../src/api-model');
 
 var model = {
   AUTHORIZATION: {
@@ -27,4 +27,4 @@ var model = {
   }
 }
 
-module.exports = new ApiModel(model);
+module.exports = new ApiModel(model).compile();
