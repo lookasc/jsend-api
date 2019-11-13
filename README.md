@@ -13,7 +13,7 @@ npm install jsend-api --save
 
 # About
 
-This package provides convenient way to shape, use and maintain JSON API from a single file. It's created for Express.js and implements JSend specification.
+This package provides convenient way to shape, use and maintain JSON API responses from a single file. It's created for Express.js and implements JSend specification.
 
 # Usage
 
