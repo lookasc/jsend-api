@@ -8,7 +8,7 @@ module.exports = {
       this.data = json;
       return this;
     },
-    locals: null
+    locals: {}
   },
   DATA: 'mock data',
   EMPTY: undefined,

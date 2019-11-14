@@ -21,7 +21,7 @@ describe('JSendApi \n', () => {
 
     it('should throw when model not supplied', () => {
       let create = () => new API().compile();
-      expect(create).to.throw;
+      expect(create).to.throw();
     });
     
     it('should have the same keys as source model', () => {
@@ -71,7 +71,7 @@ describe('JSendApi \n', () => {
       expect(data.data).to.be.equal(dataField);
     });
     
-    it('should return JSON object for error response', () => {
+    it('should return JSON object for error response\n', () => {
       let mockData = mock.model.TEST.ERROR;
       let dataField = 'data';
       let data = APIc.RESPONSE.TEST.ERROR.withData(dataField).jsend(mockRes.RES).data;
@@ -85,6 +85,41 @@ describe('JSendApi \n', () => {
 
   describe('As a function \n', () => {
 
+    var singleResponseModel;
+    var modelObject = mock.model.TEST.TEST2;
+    
+    beforeEach(() => {
+      singleResponseModel = API(modelObject);
+    });
+
+    it('should be a Response instance\n', () => {
+      expect(singleResponseModel).to.be.instanceOf(Response);
+    });
+
+  });
+
+  describe('Configuration middleware \n', () => {
+    
+    var config = { someConfig: true };
+    var middlewareFunction;
+
+    beforeEach(() => {
+      middlewareFunction = API.config(config);
+    });
+
+    it('should return middleware function', () => {
+      expect(typeof(middlewareFunction)).to.equal('function');
+    });
+
+    it('should save config object in res.locals.jsend', () => {
+      let res = mockRes.RES;
+      expect(res.locals).to.be.empty;
+      middlewareFunction(null, res, null);
+      expect(res.locals).to.include.keys(['jsend']);
+      expect(res.locals.jsend).to.include.keys(['someConfig']);
+      expect(res.locals.jsend.someConfig).to.be.true;
+    });
+    
   });
     
 });
