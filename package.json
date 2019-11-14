@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint \"./**/*.js\"",
     "test": "nyc --reporter=html --reporter=text mocha **/*.test.js --bail --timeout 3000 --exit"
   },
   "repository": {
@@ -24,6 +25,9 @@
   "homepage": "https://github.com/lookasc/jsend-api#readme",
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
     "mocha": "^6.2.2",
     "nyc": "^14.1.1"
   }
