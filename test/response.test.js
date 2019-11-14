@@ -83,4 +83,24 @@ describe('Response class:\n', () => {
     expect(res.payload.message).to.equal(mock.ERROR.message);
   });
 
+  it('should not append optional fields to response', () => {
+    let res = new Response(mock.SUCCESS_WITH_OPTIONALS).jsend(mock.RES);
+    expect(res.data).to.include.keys(['status']);
+    expect(res.data).to.not.include.keys(['opt']);
+  });
+
+  it('should append optional fields to response', () => {
+    let resObj = mock.RES;
+    resObj = {
+      ...resObj,
+      locals: {
+        jsend: {
+          allowOptional: true
+        }
+      }
+    }
+    let res = new Response(mock.SUCCESS_WITH_OPTIONALS).jsend(resObj);
+    expect(res.data).to.include.keys(['status', 'opt']);
+  });
+
 });

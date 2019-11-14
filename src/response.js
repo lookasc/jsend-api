@@ -1,24 +1,32 @@
 const ALLOWED_STATUSES = ['success', 'fail', 'error'];
+
 const DEFAULT_STATUS_CODE = {
   SUCCESS: 200,
   FAIL: 400,
   ERROR: 500
 }
 
-var Response = function (data) {
-  this.status = getStatus(data);
-  setStatusCode.call(this, data)
-  this.payload = createPayload(data);
+const OPTIONS = {
+  ALLOW_OPTIONAL: 'allowOptional',
+  ADD_HTTP_CODE_TO_ERROR_RESPONSE: 'addHttpCodeToErrorResponse'
 }
 
-Response.prototype.jsend = function (res) {
-  fillDataFieldWithNullForSuccessAndFail.call(this);
-  return res.status(this.statusCode).json(this.payload);
+var Response = function (data) {
+  this.status = getStatus(data);
+  setStatusCode.call(this, data);
+  this.optional = data.optional || null;
+  this.payload = createPayload(data);
 }
 
 Response.prototype.withData = function (data) {
   this.payload.data = data || null;
   return this;
+}
+
+Response.prototype.jsend = function (res) {
+  appendOptionalResponse.call(this, res);
+  fillDataFieldWithNullForSuccessAndFail.call(this);
+  return res.status(this.statusCode).json(this.payload);
 }
 
 var getStatus = function (data) {
@@ -67,7 +75,6 @@ var getErrorPayload = function (data) {
   payload.status = data.status;
   if (!data.message) throw new Error('Message field is required for error response');
   payload.message = data.message;
-  if (data.code) payload.code = data.code;
   return payload;
 }
 
@@ -76,6 +83,21 @@ var fillDataFieldWithNullForSuccessAndFail = function () {
   let hasProperStatus = (status === 'success' || status === 'fail');
   let dataFieldNotExist = !this.payload.data; 
   if ( hasProperStatus && dataFieldNotExist ) this.payload.data = null;
+}
+
+var appendOptionalResponse = function (res) {
+  let shouldAppendOptional = getOption(res, OPTIONS.ALLOW_OPTIONAL);
+  if (shouldAppendOptional) {
+    this.payload = {
+      ...this.payload,
+      ...this.optional
+    }
+  }
+}
+
+var getOption = function (res, optionName) {
+  let optionExist = res.locals && res.locals.jsend && res.locals.jsend[optionName];
+  if (optionExist) return res.locals.jsend[optionName];
 }
 
 module.exports = Response;

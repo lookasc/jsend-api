@@ -1,13 +1,23 @@
 var Response = require('./response');
 
-var ApiModel = function (apiModel) {
-  this.inputModel = apiModel;
+var JSendApi = function (singleResponseModel) {
 
-  this.compile = function () {
+  this.compile = function (apiModel) {
+    if (!apiModel) throw new Error('There was not model provided. Compilation not possible');
     this.RESPONSE = prepareApiObject(this.inputModel);
     return this;
   }
+
+  if (singleResponseModel) return new Response(singleResponseModel);
 };
+
+Object.defineProperty(JSendApi, 'config', {
+  value: function (config) {
+    return function (req, res, next) {
+      if (config) res.locals.jsend = config;
+    }
+  }
+});
 
 // Rewrite all members from model to API object and populate with Response objects
 var prepareApiObject = function (inputModel) {
@@ -27,4 +37,4 @@ var prepareApiObject = function (inputModel) {
   return apiObject;
 }
 
-module.exports = ApiModel;
+module.exports = JSendApi;

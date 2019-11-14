@@ -7,7 +7,8 @@ module.exports = {
     json: function (json) {
       this.data = json;
       return this;
-    }
+    },
+    locals: null
   },
   DATA: 'mock data',
   EMPTY: undefined,
@@ -35,5 +36,11 @@ module.exports = {
   },
   ERROR_WITHOUT_MESSAGE: {
     status: 'error'
+  },
+  SUCCESS_WITH_OPTIONALS: {
+    status: 'success',
+    optional: {
+      opt: true
+    }
   }
 }
