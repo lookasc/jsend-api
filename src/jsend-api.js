@@ -4,7 +4,7 @@ var JSendApi = function (singleResponseModel) {
 
   this.compile = function (apiModel) {
     if (!apiModel) throw new Error('There was not model provided. Compilation not possible');
-    this.RESPONSE = prepareApiObject(this.inputModel);
+    this.RESPONSE = prepareApiObject(apiModel);
     return this;
   }
 
