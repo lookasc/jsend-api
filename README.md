@@ -21,8 +21,10 @@ This package provides convenient way to shape, use and maintain JSON API respons
 # Usage
 
 There're two possible ways of how the package may be used:
-1. Modeling API as an object and compiling it for use with Express.js.
-2. Modeling API as an object without compiling it. The package is used as a function.
+1. Modeling API responses as an object without compiling it. The package is used as a function.
+2. Modeling API responses as an object and compiling it for use with Express.js.
+
+First approach is more IntelliSense friendly.
 
 Both approaches requirement is to have API modeled as a single object:
 
@@ -61,40 +63,7 @@ Each API response in the model should consist of at least required keys (accordi
 2. `message` is required only for `error` response, but may be supplied for all statuses.
 3. `statusCode` is a HTTP status code which will be send by Express.js in response.
 
-## Approach 1 - compile based API model
-
-### api-model.js
-```js
-var { ApiModel } = require('jsend-api'); // import ApiModel class
-
-var model = {
-    // the same model as above
-}
-
-// this will compile your model and save it in RESPONSE 
-// field of object created by 'new APiModel()'
-module.exports = new ApiModel(model).compile();
-```
-### app.js
-```js
-const app = require('express')();
-const API = require('./api-model'); // import compiled model as 'API'
-
-app.get('/', (req, res) => {
-  //        API - instance of ApiModel class
-  //   RESPONSE - field of API class where your model is stored
-  // jsend(res) - you must pass Express's res object as param
-  return API.RESPONSE.SOME_SERVICE.SERVICE_SUCCESS_ADD.jsend(res);
-  // above line will be behind the scenes called this way:
-  // return res.status(yourModelStatus).json(yourModelPayload);
-});
-
-app.listen(3000, () => {
-  console.log(`Application started`);
-});
-```
-
-## Approach 2 - model based API without compilation
+## Approach 1 - model based API without compilation
 
 ### api-model.js
 ```js
@@ -108,14 +77,46 @@ module.exports = model;
 ### app.js
 ```js
 const app = require('express')();
-const { API } = require('jsend-api'); // import API function from package
-const RESPONSE = require('./api-model'); // import model as RESPONSE
+const API = require('jsend-api'); // require package as API and use as a function
+const RESPONSE = require('./api-model'); // import model as a RESPONSE
 
 app.get('/', (req, res) => {
   //        API - function
   //   RESPONSE - just your model object
   // jsend(res) - you must pass Express's res object as param
   return API(RESPONSE.SOME_SERVICE.SERVICE_SUCCESS_ADD).jsend(res);
+  // above line will be behind the scenes called this way:
+  // return res.status(yourModelStatus).json(yourModelPayload);
+});
+
+app.listen(3000, () => {
+  console.log(`Application started`);
+});
+```
+## Approach 2 - compile based API model
+
+### api-model.js
+```js
+var API = require('jsend-api'); // import package and use as a class
+
+var model = {
+    // the same model as above
+}
+
+// this will compile your model and save it in RESPONSE 
+// field of object created by 'new APiModel()'
+module.exports = new API().compile(model);
+```
+### app.js
+```js
+const app = require('express')();
+const API = require('./api-model'); // import compiled model as 'API'
+
+app.get('/', (req, res) => {
+  //        API - instance of ApiModel class
+  //   RESPONSE - field of API class where your model is stored
+  // jsend(res) - you must pass Express's res object as param
+  return API.RESPONSE.SOME_SERVICE.SERVICE_SUCCESS_ADD.jsend(res);
   // above line will be behind the scenes called this way:
   // return res.status(yourModelStatus).json(yourModelPayload);
 });
@@ -146,9 +147,9 @@ var data = {
   moreDummyData: 'ytrewq'
 }
 // approach 1
-return API.RESPONSE.SOME_SERVICE.SERVICE_SUCCESS_ADD.withData(data).jsend(res);
-// approach 2
 return API(RESPONSE.SOME_SERVICE.SERVICE_SUCCESS_ADD).withData(data).jsend(res);
+// approach 2
+return API.RESPONSE.SOME_SERVICE.SERVICE_SUCCESS_ADD.withData(data).jsend(res);
 ```
 
 The output will be as follow:
@@ -161,8 +162,56 @@ The output will be as follow:
     "moreDummyData":"ytrewq"
   }
 }
-
 ```
+
+## Adding optional fields to JSON payload
+
+It is possible to send more data fields than it's specified by JSend. This option may be set in middleware `API.config()`:
+
+```js
+// Approach 1 import:
+const API = require('jsend-api');   // <-- just package
+// Approach 2 import:
+const API = require('./api-model'); // <-- compiled model
+
+app.use(API.config({
+	allowOptional: true
+}));
+```
+
+When `allowOptional` option is set more data may be appended to your model in `optional` object:
+
+```js
+var model = {
+  AUTHORIZATION: {
+    UNAUTHORIZED_USER: {
+      status: 'error',
+      message: 'User not authorized. Access denied.',
+      statusCode: 401,
+      optional: {       // <-- must be an object
+        optionalData1: 123,
+        optionalData2: 'qwerty'
+      }
+    }
+  }
+}
+```
+
+Output will be:
+
+```json
+{
+  "status": "success",
+  "message": "Data added.",
+  "data": {
+    "dummyData":"qwerty",
+    "moreDummyData":"ytrewq"
+  },
+  "optionalData1": 123,
+  "optionalData2": "qwerty"
+}
+```
+
 
 # MIT License
 
