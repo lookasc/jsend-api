@@ -4,7 +4,7 @@ Model based JSON API module, implementing JSend specification for Express.js
 [![NPM][npm-icon]][npm-url]
 
 [![Build Status](https://travis-ci.org/lookasc/jsend-api.svg?branch=master)](https://travis-ci.org/lookasc/jsend-api)
-[![Coverage Status](https://coveralls.io/repos/github/lookasc/jsend-api/badge.svg?branch=release2)](https://coveralls.io/github/lookasc/jsend-api?branch=release2)
+[![Coverage Status](https://coveralls.io/repos/github/lookasc/jsend-api/badge.svg?branch=master)](https://coveralls.io/github/lookasc/jsend-api?branch=master)
 
 [npm-icon]: https://nodei.co/npm/jsend-api.svg?downloads=true
 [npm-url]: https://www.npmjs.com/package/jsend-api
