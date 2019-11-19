@@ -29,6 +29,9 @@ module.exports = {
 		status: 'fail',
 		message: 'fail message'
 	},
+	FAIL_WITHOUT_MESSAGE: {
+		status: 'fail'
+	},
 	ERROR: {
 		status: 'error',
 		message: 'error message',

@@ -175,7 +175,7 @@ const API = require('jsend-api');   // <-- just package
 const API = require('./api-model'); // <-- compiled model
 
 app.use(API.config({
-	allowOptional: true
+  allowOptional: true
 }));
 ```
 
@@ -212,6 +212,24 @@ Output will be:
 }
 ```
 
+For dynamically created data `withOptional()` function may be used:
+
+```js
+var opts = {
+  optionalData3: 'option from withOptional() method',
+  optionalData4: 'option from withOptional() method'
+}
+// approach 1
+return API(RESPONSE.SOME_SERVICE.SERVICE_SUCCESS_ADD)
+	.withData(data)
+	.withOptional(opts)
+	.jsend(res);
+// approach 2
+return API.RESPONSE.SOME_SERVICE.SERVICE_SUCCESS_ADD
+	.withData(data)
+	.withOptional(opts)
+	.jsend(res);
+```
 
 # MIT License
 

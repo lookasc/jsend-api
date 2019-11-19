@@ -101,17 +101,18 @@ describe('JSendApi \n', () => {
 	describe('Configuration middleware \n', () => {
 		
 		var config = { someConfig: true };
-		var middlewareFunction;
 
 		beforeEach(() => {
-			middlewareFunction = API.config(config);
+			mockRes.RES.locals = {};
 		});
 
 		it('should return middleware function', () => {
+			let middlewareFunction = API.config(config);
 			expect(typeof(middlewareFunction)).to.equal('function');
 		});
 
 		it('should save config object in res.locals.jsend', () => {
+			let middlewareFunction = API.config(config);
 			let res = mockRes.RES;
 			expect(res.locals).to.be.empty;
 			let next = () => true;
@@ -119,6 +120,15 @@ describe('JSendApi \n', () => {
 			expect(res.locals).to.include.keys(['jsend']);
 			expect(res.locals.jsend).to.include.keys(['someConfig']);
 			expect(res.locals.jsend.someConfig).to.be.true;
+		});
+
+		it('should not create res.locals.jsend when no config data supplied', () => {
+			let middlewareFunction = API.config();
+			let res = mockRes.RES;
+			expect(res.locals).to.be.empty;
+			let next = () => true;
+			middlewareFunction(null, res, next);
+			expect(res.locals).to.not.include.keys(['jsend']);
 		});
 		
 	});

@@ -44,11 +44,24 @@ describe('Response class:\n', () => {
 		expect(output.data.data).to.be.null;
 	});
 
+	it('should  have no message field in fail response', () => {
+		let res = new Response(mock.FAIL_WITHOUT_MESSAGE);
+		let output = res.jsend(mock.RES);
+		expect(output.data).to.not.include.keys(['message']);
+	});
+
 	it('should have specified by "withData" data field', () => {
 		let res = new Response(mock.SUCCESS);
 		let output = res.withData(mock.DATA).jsend(mock.RES);
 		expect(output.data).to.include.keys(['status', 'data']);
 		expect(output.data.data).to.equal(mock.DATA);
+	});
+
+	it('should have data field null if no data supplied in "withData"', () => {
+		let res = new Response(mock.SUCCESS);
+		let output = res.withData().jsend(mock.RES);
+		expect(output.data).to.include.keys(['status', 'data']);
+		expect(output.data.data).to.be.null;
 	});
 
 	it('should have proper message field', () => {
@@ -83,24 +96,42 @@ describe('Response class:\n', () => {
 		expect(res.payload.message).to.equal(mock.ERROR.message);
 	});
 
-	it('should not append optional fields to response', () => {
+	it('should not append optional fields to response \n', () => {
 		let res = new Response(mock.SUCCESS_WITH_OPTIONALS).jsend(mock.RES);
 		expect(res.data).to.include.keys(['status']);
 		expect(res.data).to.not.include.keys(['opt']);
 	});
 
-	it('should append optional fields to response', () => {
-		let resObj = mock.RES;
-		resObj = {
-			...resObj,
-			locals: {
-				jsend: {
-					allowOptional: true
+	describe('Optional filelds \n', () => {
+		let resObj;
+		
+		beforeEach(() => {
+			resObj = mock.RES;
+			resObj = {
+				...resObj,
+				locals: {
+					jsend: {
+						allowOptional: true
+					}
 				}
-			}
-		};
-		let res = new Response(mock.SUCCESS_WITH_OPTIONALS).jsend(resObj);
-		expect(res.data).to.include.keys(['status', 'opt']);
+			};
+		});
+
+		it('should append optional fields to response', () => {
+			let res = new Response(mock.SUCCESS_WITH_OPTIONALS).jsend(resObj);
+			expect(res.data).to.include.keys(['status', 'opt']);
+		});
+	
+		it('should have specified by "withOptional" option field', () => {
+			let res = new Response(mock.SUCCESS);
+			let opts = { 'optionalField': true };
+			let output = res.withOptional(opts).jsend(resObj);
+			expect(output.data).to.include.keys(['optionalField']);
+			expect(output.data.optionalField).to.exist;
+			expect(output.data.optionalField).to.be.true;
+		});
+
 	});
+
 
 });

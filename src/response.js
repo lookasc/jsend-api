@@ -23,6 +23,14 @@ Response.prototype.withData = function (data) {
 	return this;
 };
 
+Response.prototype.withOptional = function (data) {
+	this.optional = {
+		...this.optional,
+		...data
+	};
+	return this;
+};
+
 Response.prototype.jsend = function (res) {
 	appendOptionalResponse.call(this, res);
 	fillDataFieldWithNullForSuccessAndFail.call(this);

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint \"./**/*.js\"",
+    "lint-fix": "eslint --fix \"./**/*.js\"",
     "test": "nyc --reporter=html --reporter=text mocha **/*.test.js --bail --timeout 3000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
