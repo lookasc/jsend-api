@@ -148,12 +148,12 @@ var data = {
 }
 // approach 1
 return API(RESPONSE.SOME_SERVICE.SERVICE_SUCCESS_ADD)
-	.withData(data)
-	.jsend(res);
+  .withData(data)
+  .jsend(res);
 // approach 2
 return API.RESPONSE.SOME_SERVICE.SERVICE_SUCCESS_ADD
-	.withData(data)
-	.jsend(res);
+  .withData(data)
+  .jsend(res);
 ```
 
 The output will be as follow:
@@ -246,7 +246,7 @@ Output will be:
     "moreDummyData":"ytrewq"
   },
   "optionalData1": 123,
-	"optionalData2": "qwerty",
+  "optionalData2": "qwerty",
   "optionalData3": "option from withOptional() method",
   "optionalData4": "option from withOptional() method"
 }
