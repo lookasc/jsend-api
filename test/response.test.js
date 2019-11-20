@@ -133,5 +133,27 @@ describe('Response class:\n', () => {
 
 	});
 
+	describe('HTTP status code fileld \n', () => {
+		let resObj;
+		
+		beforeEach(() => {
+			resObj = mock.RES;
+			resObj = {
+				...resObj,
+				locals: {
+					jsend: {
+						addHttpCodeToResponse: true
+					}
+				}
+			};
+		});
+
+		it('should append HTTP status code to response', () => {
+			let res = new Response(mock.SUCCESS).jsend(resObj);
+			expect(res.data).to.include.keys(['code']);
+			expect(res.data.code).to.equal(resObj.statusCode);
+		});
+
+	});
 
 });

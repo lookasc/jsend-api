@@ -8,7 +8,7 @@ const DEFAULT_STATUS_CODE = {
 
 const OPTIONS = {
 	ALLOW_OPTIONAL: 'allowOptional',
-	ADD_HTTP_CODE_TO_ERROR_RESPONSE: 'addHttpCodeToErrorResponse'
+	ADD_HTTP_CODE_TO_ERROR_RESPONSE: 'addHttpCodeToResponse'
 };
 
 var Response = function (data) {
@@ -32,6 +32,7 @@ Response.prototype.withOptional = function (data) {
 };
 
 Response.prototype.jsend = function (res) {
+	appendHttpCodeToResponse.call(this, res);
 	appendOptionalResponse.call(this, res);
 	fillDataFieldWithNullForSuccessAndFail.call(this);
 	return res.status(this.statusCode).json(this.payload);
@@ -99,6 +100,16 @@ var appendOptionalResponse = function (res) {
 		this.payload = {
 			...this.payload,
 			...this.optional
+		};
+	}
+};
+
+var appendHttpCodeToResponse = function (res) {
+	let shouldAppendHttpCode = getOption(res, OPTIONS.ADD_HTTP_CODE_TO_ERROR_RESPONSE);
+	if (shouldAppendHttpCode) {
+		this.payload = {
+			...this.payload,
+			code: this.statusCode
 		};
 	}
 };

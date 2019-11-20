@@ -9,7 +9,7 @@ Model based JSON API module, implementing JSend specification for Express.js
 [npm-icon]: https://nodei.co/npm/jsend-api.svg?downloads=true
 [npm-url]: https://www.npmjs.com/package/jsend-api
 
-# Install
+# Installation
 ```sh 
 npm install jsend-api --save 
 ```
@@ -249,6 +249,32 @@ Output will be:
   "optionalData2": "qwerty",
   "optionalData3": "option from withOptional() method",
   "optionalData4": "option from withOptional() method"
+}
+```
+
+## Adding HTTP status code to JSON payload
+
+It is possible to send HTTP status code in response. This option may be set in middleware `API.config()`. Status code is taken directly from model:
+
+```js
+// Approach 1 import:
+const API = require('jsend-api');   // <-- just package
+// Approach 2 import:
+const API = require('./api-model'); // <-- compiled model
+
+app.use(API.config({
+  addHttpCodeToResponse: true
+}));
+```
+
+Output will be:
+
+```json
+{
+  "status": "success",
+  "message": "Data added.",
+  "data": null,
+  "code": 201
 }
 ```
 
